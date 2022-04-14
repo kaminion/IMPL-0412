@@ -4,4 +4,5 @@
 
 ### Reference
 
-- [list를 argument로 넘길 때, \* 키워드](https://www.programiz.com/python-programming/args-and-kwargs)
+- [컨테이너 타입의 데이터를 Unpacking 할 때](https://mingrammer.com/understanding-the-asterisk-of-python/)
+- [Adaptive Average Pooling](https://stackoverflow.com/questions/58692476/what-is-adaptive-average-pooling-and-how-does-it-work)
