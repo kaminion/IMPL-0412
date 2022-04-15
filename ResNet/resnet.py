@@ -37,7 +37,7 @@ class PracticeResNet(nn.Module):
         # 아웃풋 사이즈만 지정해주면 되는 Pooling Operation을 사용
         self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
 
-        # 마지막 채널을 받을 수 있는 차원을 만듬
+        # 마지막 채널을 받을 수 있는 차원을 만듬 (이 부분이랑 앞부분은 원래 finetuning 하는 부분임)
         self.fc = nn.Linear(512 * block.expansion, num_classes)
 
     # block: block instance
