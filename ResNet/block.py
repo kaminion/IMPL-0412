@@ -22,14 +22,14 @@ class BasicBlock(nn.Module):
             nn.BatchNorm2d(out_channels)
         )
 
-        # eq1의 경우
+        # Eqn. 1의 경우
         self.shortcut = nn.Sequential()
 
         # 차원이 바뀌거나, input/output 채널이 바뀔 경우 (선형 곱으로 차원을 맞춰줌, eq(1) case가 아닌 경우)
         # 이 경우 stride 2가 적용되어 차원이 바뀔 때, in_channels, out_channels
         if stride != 1 or in_channels != out_channels:
             self.shortcut = nn.Sequential(
-                # 논문에서 말하는 W는 1x1 Conv, stride 적용만 해서 차원만 맞춤
+                # 논문에서 말하는 Eqn.2 는 1x1 Conv, stride 적용만 해서 차원만 맞춤
                 nn.Conv2d(in_channels, out_channels,
                           kernel_size=1, stride=stride, bias=False),
                 # 모든 Conv 연산 후에는 Batch를 적용한다 했음
