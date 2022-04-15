@@ -6,6 +6,7 @@ class BasicBlock(nn.Module):
     """
     3*3 Convolution Layer 2개로 이루어진 Block이다.
     """
+    expansion = 1
 
     def __init__(self, in_channels, out_channels, stride=1):
         super(BasicBlock, self).__init__()
@@ -26,7 +27,7 @@ class BasicBlock(nn.Module):
         self.shortcut = nn.Sequential()
 
         # 차원이 바뀌거나, input/output 채널이 바뀔 경우 (선형 곱으로 차원을 맞춰줌, eq(1) case가 아닌 경우)
-        # 이 경우 stride 2가 적용되어 차원이 바뀔 때, in_channels, out_channels
+        # 이 경우 stride 2가 적용되어 차원이 바뀔 때, in_channels, out_channels이 안맞을 경우
         if stride != 1 or in_channels != out_channels:
             self.shortcut = nn.Sequential(
                 # 논문에서 말하는 Eqn.2 는 1x1 Conv, stride 적용만 해서 차원만 맞춤

@@ -12,7 +12,7 @@ class PracticeResNet(nn.Module):
 
         super(PracticeResNet, self).__init__()
 
-        # 초기 채널은 64 채널부터 시작함
+        # 초기 채널은 64 채널부터 시작함 (논문 구조 참조)
         self.in_channels = 64
 
         # 논문에 의하면 매 Conv2D마다 BatchNorm을 함
@@ -27,16 +27,18 @@ class PracticeResNet(nn.Module):
 
         # channel수는 64, 128, 256, 512순이다. 증가한다.
         self.conv2_x = self._make_layer(
-            block, self.in_channels, num_block[0], 2)
+            block, 64, num_block[0], 2)
         self.conv3_x = self._make_layer(
-            block, self.in_channels * 2, num_block[1], 2)
+            block, 128, num_block[1], 2)
         self.conv4_x = self._make_layer(
-            block, self.in_channels * 4, num_block[2], 2)
+            block, 256, num_block[2], 2)
         self.conv5_x = self._make_layer(
-            block, self.in_channels * 6, num_block[3], 2)
+            block, 512, num_block[3], 2)
 
         # 아웃풋 사이즈만 지정해주면 되는 Pooling Operation을 사용
         self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
+
+        # 마지막 채널을 받을 수 있는 차원을 만듬
         self.fc = nn.Linear(512 * block.expansion, num_classes)
 
     # block: block instance
@@ -64,11 +66,23 @@ class PracticeResNet(nn.Module):
         # 배열에 residual block 추가
         for stride in strides:
             layers.append(block(self.in_channels, out_channels, stride))
+            # 차원 변경됨 (여기서 BottleNeck 같은 경우는 4배가 됨)
+            self.in_channels = out_channels * block.expansion
 
         # Unpacking Container Type
         return nn.Sequential(*layers)
 
     def forward(self, x):
-            
 
-        return x
+        output = self.conv1(x)
+        output = self.conv2_x(output)
+        output = self.conv3_x(output)
+        output = self.conv4_x(output)
+        output = self.conv5_x(output)
+        output = self.avg_pool(output)
+        # avg_pool로 1 * 1 만들었으니 flatten이 필요 (FC 레이어는 1차원임)
+        # 행, 렬 순으로 변환 (그러나 Pytorch의 Tensor Convention은 batch_size, channel, width, height 순이므로 채널 사이즈 외 다 flatten)
+        output = output.view(output.size[0], -1)
+        output = self.fc(output)
+
+        return output
