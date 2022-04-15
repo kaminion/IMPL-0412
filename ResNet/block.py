@@ -43,3 +43,8 @@ class BasicBlock(nn.Module):
         x = self.residual_function(x) + self.shortcut(x)
         x = self.ReLU(x)
         return x
+
+
+class BottleNeck(nn.Module):
+    expansion = 4 
+    

@@ -2,13 +2,12 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
-from block import BasicBlock
+from block import BasicBlock, BottleNeck
 
 
 class PracticeResNet(nn.Module):
     # block: , num_block: 각 모듈의 갯수 (논문에서 구조 부분 x2, x2 로 표시되어있는 부분)
-    def __init__(self, block, num_block, num_classes=10,
-                 init_weights=True):
+    def __init__(self, block: BasicBlock or BottleNeck, num_block, num_classes=10):
 
         super(PracticeResNet, self).__init__()
 
@@ -72,9 +71,9 @@ class PracticeResNet(nn.Module):
         # Unpacking Container Type
         return nn.Sequential(*layers)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor):
 
-        output = self.conv1(x)
+        output: torch.Tensor = self.conv1(x)
         output = self.conv2_x(output)
         output = self.conv3_x(output)
         output = self.conv4_x(output)
@@ -86,3 +85,12 @@ class PracticeResNet(nn.Module):
         output = self.fc(output)
 
         return output
+
+
+class ResNetMaker():
+
+    def _makeResNet_18():
+        """
+            return a ResNet 18 Object
+        """
+        return PracticeResNet(BasicBlock, [2, 2, 2, 2])
