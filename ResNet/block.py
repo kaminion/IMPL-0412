@@ -46,5 +46,25 @@ class BasicBlock(nn.Module):
 
 
 class BottleNeck(nn.Module):
-    expansion = 4 
-    
+    """
+        50 layers 이상
+    """
+    expansion = 4
+
+    def __init__(self, in_channels, out_channels, stride=1):
+        super(BottleNeck, self).__init__()
+
+        self.residual_function = nn.Sequential(
+            nn.Conv2d(in_channels, out_channels, stride, bias=False),
+            nn.BatchNorm2d(out_channels),
+
+        )
+
+        self.shortcut = nn.Sequential()
+
+        self.ReLU = F.relu()
+
+    def forward(self, x):
+        x = self.residual_function(x) + self.shortcut(x)
+        x = self.ReLU(x)
+        return x
