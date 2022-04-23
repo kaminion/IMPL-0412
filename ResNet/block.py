@@ -1,4 +1,3 @@
-from torch import batch_norm
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -38,7 +37,7 @@ class BasicBlock(nn.Module):
                 nn.BatchNorm2d(out_channels)
             )
 
-        self.ReLU = F.relu()
+        self.ReLU = nn.ReLU()
 
     def forward(self, x):
         x = self.residual_function(x) + self.shortcut(x)
@@ -62,7 +61,7 @@ class BottleNeck(nn.Module):
             nn.BatchNorm2d(out_channels),
             nn.ReLU(),
             # 여기서 크기 조정, padding = 1 (112+2-3)/2 + 1 = 111/2 = 55 + 1 = 56
-            nn.Conv2d(out_channels, out_channels, stride, bias=False,
+            nn.Conv2d(out_channels, out_channels, stride=stride, bias=False,
                       padding=1, kernel_size=3),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(),
@@ -81,10 +80,10 @@ class BottleNeck(nn.Module):
                 nn.Conv2d(in_channels, out_channels * BottleNeck.expansion,
                           kernel_size=1, stride=stride, bias=False),
                 # 모든 Conv 연산 후에는 Batch를 적용한다 했음
-                nn.BatchNorm2d(out_channels)
+                nn.BatchNorm2d(out_channels * BottleNeck.expansion)
             )
 
-        self.ReLU = F.relu()
+        self.ReLU = nn.ReLU()
 
     def forward(self, x):
         x = self.residual_function(x) + self.shortcut(x)

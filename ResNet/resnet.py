@@ -81,49 +81,47 @@ class PracticeResNet(nn.Module):
         output = self.avg_pool(output)
         # avg_pool로 1 * 1 만들었으니 flatten이 필요 (FC 레이어는 1차원임)
         # 행, 렬 순으로 변환 (그러나 Pytorch의 Tensor Convention은 batch_size, channel, width, height 순이므로 채널 사이즈 외 다 flatten)
-        output = output.view(output.size[0], -1)
+        output = output.view(output.size(0), -1)
         output = self.fc(output)
 
         return output
 
 
-class ResNetMaker():
+class ResNetMaker(object):
 
-    maker = None
+    # signleton
+    def __new__(instance):
 
-    # singleton
-    @staticmethod
-    def createMaker():
-        maker = ResNetMaker.maker
-        if(isinstance(maker, ResNetMaker) == False):
-            maker = ResNetMaker()
-        return maker
+        # 해당 속성이 없다면
+        if not hasattr(instance, "maker"):
+            instance.maker = super().__new__(instance)  # 객체 생성 후 바인딩
+        return instance.maker
 
-    def _makeResNet_18():
+    def _makeResNet_18(self):
         """
             return a ResNet 18 Object
         """
         return PracticeResNet(BasicBlock, [2, 2, 2, 2])
 
-    def _makeResNet_34():
+    def _makeResNet_34(self):
         """
             return a ResNet 34 Object
         """
         return PracticeResNet(BasicBlock, [2, 4, 6, 3])
 
-    def _makeResNet_50():
+    def _makeResNet_50(self):
         """
             return a ResNet 50 Object
         """
         return PracticeResNet(BottleNeck, [3, 4, 6, 3])
 
-    def _makeResNet_101():
+    def _makeResNet_101(self):
         """
             return a ResNet 101 Object
         """
         return PracticeResNet(BottleNeck, [3, 4, 23, 3])
 
-    def _makeResNet_152():
+    def _makeResNet_152(self):
         """
             return a ResNet 152 Object
         """
