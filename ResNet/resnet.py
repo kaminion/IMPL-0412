@@ -94,3 +94,27 @@ class ResNetMaker():
             return a ResNet 18 Object
         """
         return PracticeResNet(BasicBlock, [2, 2, 2, 2])
+
+    def _makeResNet_34():
+        """
+            return a ResNet 34 Object
+        """
+        return PracticeResNet(BasicBlock, [2, 4, 6, 3])
+
+    def _makeResNet_50():
+        """
+            return a ResNet 50 Object
+        """
+        return PracticeResNet(BottleNeck, [3, 4, 6, 3])
+
+    def _makeResNet_101():
+        """
+            return a ResNet 101 Object
+        """
+        return PracticeResNet(BottleNeck, [3, 4, 23, 3])
+
+    def _makeResNet_152():
+        """
+            return a ResNet 152 Object
+        """
+        return PracticeResNet(BottleNeck, [3, 8, 36, 3])
