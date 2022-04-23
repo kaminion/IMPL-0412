@@ -89,6 +89,16 @@ class PracticeResNet(nn.Module):
 
 class ResNetMaker():
 
+    maker = None
+
+    # singleton
+    @staticmethod
+    def createMaker():
+        maker = ResNetMaker.maker
+        if(isinstance(maker, ResNetMaker) == False):
+            maker = ResNetMaker()
+        return maker
+
     def _makeResNet_18():
         """
             return a ResNet 18 Object
