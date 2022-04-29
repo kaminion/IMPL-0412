@@ -81,6 +81,7 @@ class PracticeResNet(nn.Module):
         output = self.avg_pool(output)
         # avg_pool로 1 * 1 만들었으니 flatten이 필요 (FC 레이어는 1차원임)
         # 행, 렬 순으로 변환 (그러나 Pytorch의 Tensor Convention은 batch_size, channel, width, height 순이므로 채널 사이즈 외 다 flatten)
+        # 학습 시 배치 사이즈를 제외하고 들어오므로 채널부터 적용
         output = output.view(output.size(0), -1)
         output = self.fc(output)
 
