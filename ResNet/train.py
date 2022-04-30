@@ -18,7 +18,9 @@ from resnet import ResNetMaker
 
 torch.manual_seed(233)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = ResNetMaker()._makeResNet_152().to(device)
+
+# Multi GPU Setting
+model = nn.DataParallel(ResNetMaker()._makeResNet_152().to(device))
 
 # 데이터 다운을 위한 directory 생성
 path2data = './data'
