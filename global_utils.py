@@ -1,5 +1,7 @@
 import os
 
+# global_util 파일임
+
 
 def get_lr(opt):
     """
