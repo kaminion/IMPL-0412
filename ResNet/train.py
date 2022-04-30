@@ -27,15 +27,15 @@ create_directory(path2data)
 # Data Augmentation
 # Gray Scale만 가지므로 Normalize는 1차원만 설정한다.
 train_transformation = transforms.Compose([
+    transforms.Resize(224),
     transforms.ToTensor(), # 0-1 scaling
     transforms.Normalize((0.5,), (0.5,)),
-    transforms.Resize(224)
 ])
 
 val_transformation = transforms.Compose([
+    transforms.Resize(224),
     transforms.ToTensor(),
     transforms.Normalize((0.5,), (0.5,)),
-    transforms.Resize(224)
 ])
 
 train_ds = datasets.FashionMNIST(
