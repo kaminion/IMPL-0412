@@ -3,7 +3,7 @@ from global_utils import create_directory, get_lr
 import time
 
 
-def get_param_train(opt, loss_func, train_dl, val_dl, lr_scheduler, sanity_check=False):
+def get_param_train(opt, loss_func, train_dl, val_dl, lr_scheduler, device, sanity_check=False):
     """
         description: 하이퍼파리미터 정의
     """
@@ -16,6 +16,7 @@ def get_param_train(opt, loss_func, train_dl, val_dl, lr_scheduler, sanity_check
         'val_dl': val_dl,
         'sanity_check': sanity_check,
         'lr_scheduler': lr_scheduler,
+        'device': device,
         'path2weights': './models/weights.pt'
     }
 
@@ -52,7 +53,7 @@ def loss_batch(loss_func, output: torch.Tensor, target, opt=None):
     return loss.item(), metric_b
 
 
-def loss_epoch(model, loss_func, dataset_dl, sanity_check=False, opt=None, device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')):
+def loss_epoch(model, loss_func, dataset_dl, sanity_check=False, device='cpu', opt=None):
     """
     description:
         epoch당 loss과 metric을 정의하는 함수
@@ -102,12 +103,13 @@ def train_val(model, params):
     sanity_check = params['sanity_check']
     lr_scheduler = params['lr_scheduler']
     path2weights = params['path2weights']
+    device = params['device']
 
     loss_history = {'train': [], 'val': []}
     metric_history = {'train': [], 'val': []}
 
     # 초기 best_loss 설정
-    best_loss = float('int')
+    best_loss = float('inf')
     start_time = time.time()
 
     for epoch in range(num_epochs):
@@ -117,7 +119,7 @@ def train_val(model, params):
         # train part
         model.train()
         train_loss, train_metric = loss_epoch(
-            model, loss_func, train_dl, sanity_check, opt)
+            model, loss_func, train_dl, sanity_check, device, opt)
 
         loss_history['train'].append(train_loss)
         metric_history['train'].append(train_metric)
@@ -126,7 +128,7 @@ def train_val(model, params):
         model.eval()
         with torch.no_grad():
             val_loss, val_metric = loss_epoch(
-                model, loss_func, val_dl, sanity_check, opt)
+                model, loss_func, val_dl, sanity_check, device)
             loss_history['val'].append(val_loss)
             metric_history['val'].append(val_metric)
 

@@ -28,13 +28,13 @@ create_directory(path2data)
 # Gray Scale만 가지므로 Normalize는 1차원만 설정한다.
 train_transformation = transforms.Compose([
     transforms.ToTensor(), # 0-1 scaling
-    # transforms.Normalize((0.5,), (0.5,)),
+    transforms.Normalize((0.5,), (0.5,)),
     transforms.Resize(224)
 ])
 
 val_transformation = transforms.Compose([
     transforms.ToTensor(),
-    # transforms.Normalize((0.5,), (0.5,)),
+    transforms.Normalize((0.5,), (0.5,)),
     transforms.Resize(224)
 ])
 
@@ -60,7 +60,7 @@ val_dl = DataLoader(val_ds, batch_size=32, shuffle=True)
 # reduction: sum 하면서 하나의 스칼라로 리턴함.
 # 안하면 각 배치사이즈나 데이터별로 따로 계산함(default: mean)
 loss_function = nn.CrossEntropyLoss(reduction="sum")
-optimizer = optim.Adam(model.parameters(), lr=1e-04)  # 0.0001
+optimizer = optim.Adam(model.parameters(), lr=1e-03)  # 0.001
 
 # 러닝레이트 줄여주는 스케쥴러, factor는 감소 시키는 비율, patience는 향상이 안될 때 얼마나 참을 건지(epochs)
 # mode는 모니터링 되는 값이 최소가 되어야하는지 최대가 되어야하는지, val_acc(정확도)일 경우 최대, val_loss(loss값)일 경우 작아야 좋으므로 최소가 되어야함
@@ -68,6 +68,6 @@ optimizer = optim.Adam(model.parameters(), lr=1e-04)  # 0.0001
 lr_scheduler = ReduceLROnPlateau(
     optimizer, mode='min', factor=0.1, patience=10)
 
-hyper_param = get_param_train(optimizer, loss_function, train_dl, val_dl, lr_scheduler, True)
+hyper_param = get_param_train(optimizer, loss_function, train_dl, val_dl, lr_scheduler, device, True)
 
 model, loss_hist, metric_hist = train_val(model, hyper_param)

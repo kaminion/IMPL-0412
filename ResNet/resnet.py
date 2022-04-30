@@ -16,8 +16,9 @@ class PracticeResNet(nn.Module):
 
         # 논문에 의하면 매 Conv2D마다 BatchNorm을 함
         # 112 사이즈로 맞추므로 패딩 사이즈 3
+        # MNIST 데이터는 Gray Scale이라 in channel을 1로 바꿨음
         self.conv1 = nn.Sequential(
-            nn.Conv2d(in_channels=3, out_channels=64,
+            nn.Conv2d(in_channels=1, out_channels=64,
                       padding=3, kernel_size=7, stride=2),
             nn.BatchNorm2d(64),
             nn.ReLU(),
