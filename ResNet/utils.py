@@ -1,5 +1,6 @@
 import torch
-from global_utils import create_directory
+from global_utils import create_directory, get_lr
+import time
 
 
 def get_param_train(opt, loss_func, train_dl, val_dl, lr_scheduler, sanity_check=False):
@@ -87,8 +88,58 @@ def loss_epoch(model, loss_func, dataset_dl, sanity_check=False, opt=None, devic
 
 
 # 위 함수들을 활용해서 학습하는 함수
-def train_val(model, params, lr_scheduler, ):
+def train_val(model, params):
     """
         description:
             학습을 진행하는 함수
     """
+
+    num_epochs = params['num_epochs']
+    loss_func = params['loss_func']
+    opt = params['optimizer']
+    train_dl = params['train_dl']
+    val_dl = params['val_dl']
+    sanity_check = params['sanity_check']
+    lr_scheduler = params['lr_scheduler']
+    path2weights = params['path2weights']
+
+    loss_history = {'train': [], 'val': []}
+    metric_history = {'train': [], 'val': []}
+
+    # 초기 best_loss 설정
+    best_loss = float('int')
+    start_time = time.time()
+
+    for epoch in range(num_epochs):
+        current_lr = get_lr(opt)
+        print(f"Epoch {epoch}/{num_epochs} current_lr = {current_lr}")
+
+        # train part
+        model.train()
+        train_loss, train_metric = loss_epoch(
+            model, loss_func, train_dl, sanity_check, opt)
+
+        loss_history['train'].append(train_loss)
+        metric_history['train'].append(train_metric)
+
+        # validation part
+        model.eval()
+        with torch.no_grad():
+            val_loss, val_metric = loss_epoch(
+                model, loss_func, val_dl, sanity_check, opt)
+            loss_history['val'].append(val_loss)
+            metric_history['val'].append(val_metric)
+
+        if val_loss < best_loss:
+            best_loss = val_loss
+            torch.save(model.state_dict(), path2weights)
+            print('Copied Best Model Weights')
+
+        lr_scheduler.step(val_loss)
+
+        # metric은 계산할 때 소숫점으로 나오므로 백분위 환산
+        print(
+            f"train_loss: {train_loss}, val_loss: {val_loss}, accuracy: {100 * val_metric} time: {(start_time - time.time()) / 60}")
+        print("=" * 10)
+
+    return model, loss_history, metric_history
