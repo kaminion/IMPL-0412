@@ -17,7 +17,7 @@ def get_param_train(opt, loss_func, train_dl, val_dl, lr_scheduler, device, sani
         'sanity_check': sanity_check,
         'lr_scheduler': lr_scheduler,
         'device': device,
-        'path2weights': './models/weights.pt'
+        'path2weights': './models/resnet_weights.pt'
     }
 
     create_directory('./models')
@@ -109,7 +109,7 @@ def train_val(model, params):
     metric_history = {'train': [], 'val': []}
 
     # 초기 best_loss 설정
-    best_loss = float('inf')
+    best_loss = -1
     start_time = time.time()
 
     for epoch in range(num_epochs):

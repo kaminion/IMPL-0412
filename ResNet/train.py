@@ -73,3 +73,10 @@ lr_scheduler = ReduceLROnPlateau(
 hyper_param = get_param_train(optimizer, loss_function, train_dl, val_dl, lr_scheduler, device, False)
 
 model, loss_hist, metric_hist = train_val(model, hyper_param)
+
+plt.xlabel('epochs')
+plt.ylabel('top-1 error (%)')
+plt.plot(metric_hist['train'], '--r')
+plt.plot(metric_hist['val'], 'bo')
+plt.legend(['ResNet-101 Train', 'ResNet-101 Val'])
+plt.savefig('resnet_graph.png')
