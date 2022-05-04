@@ -47,8 +47,8 @@ val_ds = datasets.FashionMNIST(
 
 
 # DataLoader에 적재
-train_dl = DataLoader(train_ds, batch_size=32, shuffle=True)
-val_dl = DataLoader(val_ds, batch_size=32, shuffle=True)
+train_dl = DataLoader(train_ds, batch_size=256, shuffle=True)
+val_dl = DataLoader(val_ds, batch_size=256, shuffle=True)
 
 
 # 이미지 확인
@@ -62,7 +62,7 @@ val_dl = DataLoader(val_ds, batch_size=32, shuffle=True)
 # reduction: sum 하면서 하나의 스칼라로 리턴함.
 # 안하면 각 배치사이즈나 데이터별로 따로 계산함(default: mean)
 loss_function = nn.CrossEntropyLoss(reduction="sum")
-optimizer = optim.Adam(model.parameters(), lr=1e-03)  # 0.001
+optimizer = optim.Adam(model.parameters(), lr=1e-03, weight_decay=0.0001)  # 0.001
 
 # 러닝레이트 줄여주는 스케쥴러, factor는 감소 시키는 비율, patience는 향상이 안될 때 얼마나 참을 건지(epochs)
 # mode는 모니터링 되는 값이 최소가 되어야하는지 최대가 되어야하는지, val_acc(정확도)일 경우 최대, val_loss(loss값)일 경우 작아야 좋으므로 최소가 되어야함
