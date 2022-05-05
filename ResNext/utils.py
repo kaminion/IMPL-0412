@@ -154,7 +154,7 @@ def train_val(model, params):
 
         lr_scheduler.step(val_loss)
 
-# metric은 계산할 때 소숫점으로 나오므로 백분위 환산
+        # metric은 계산할 때 소숫점으로 나오므로 백분위 환산
         print(
             f"train_loss: {train_loss}, val_loss: {val_loss}, accuracy: {100 * val_metric} time: {(start_time - time.time()) / 60}")
         print("=" * 10)

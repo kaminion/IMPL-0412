@@ -1,4 +1,6 @@
 import os
+import json 
+import matplotlib.pyplot as plt
 
 # global_util 파일임
 
@@ -20,3 +22,29 @@ def create_directory(directory):
             os.makedirs(directory)
     except OSError:
         print('error')
+
+def history_to_JSON(name="Model", history=[]):
+
+    with open(f'./{name}_history_info.json', 'w') as file:
+        json.dump(history, file)
+
+def JSON_to_history(name):
+    print(name)
+
+    with open(f'./{name}_history_info.json', 'r') as file:
+        history = json.load(file)
+    print(history)
+    return history
+ 
+def draw(legend, *history_list):
+    for history in history_list:
+        plt.xlabel('epochs')
+        plt.ylabel('top-1 error (%)')
+        plt.plot(history['train'], '--r')
+        plt.plot(history['val'], 'b')
+        plt.legend([f'{legend} Train', f'{legend} Val'])
+        plt.savefig('result_graph.png')
+
+history_to_JSON('resNet', {'train': [1, 2], 'val': [3, 4]})
+history = JSON_to_history('resNet')
+draw('resNet', history)
