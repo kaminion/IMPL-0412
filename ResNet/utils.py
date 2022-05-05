@@ -121,7 +121,7 @@ def train_val(model, params):
     metric_history = {'train': [], 'val': []}
 
     # 초기 best_loss 설정
-    best_loss = -1
+    best_loss = 1
     start_time = time.time()
 
     for epoch in range(num_epochs):
