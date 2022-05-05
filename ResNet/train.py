@@ -70,7 +70,7 @@ optimizer = optim.Adam(model.parameters(), lr=1e-03, weight_decay=0.0001)  # 0.0
 lr_scheduler = ReduceLROnPlateau(
     optimizer, mode='min', factor=0.1, patience=10)
 
-hyper_param = get_param_train(optimizer, loss_function, train_dl, val_dl, lr_scheduler, device, True)
+hyper_param = get_param_train(optimizer, loss_function, train_dl, val_dl, lr_scheduler, device, False)
 
 model, loss_hist, metric_hist = train_val(model, hyper_param)
 
