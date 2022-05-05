@@ -57,7 +57,7 @@ val_dl = DataLoader(val_ds, batch_size=256, shuffle=True)
 # plt.imshow(img_np_tr)
 # plt.show()
 
-# summary(model, (3, 224, 224), device=device.type)
+# summary(model, (1, 224, 224), device=device.type)
 
 # reduction: sum 하면서 하나의 스칼라로 리턴함.
 # 안하면 각 배치사이즈나 데이터별로 따로 계산함(default: mean)
@@ -74,9 +74,10 @@ hyper_param = get_param_train(optimizer, loss_function, train_dl, val_dl, lr_sch
 
 model, loss_hist, metric_hist = train_val(model, hyper_param)
 
+
 plt.xlabel('epochs')
 plt.ylabel('top-1 error (%)')
 plt.plot(metric_hist['train'], '--r')
-plt.plot(metric_hist['val'], 'bo')
+plt.plot(metric_hist['val'], 'b')
 plt.legend(['ResNet-101 Train', 'ResNet-101 Val'])
 plt.savefig('resnet_graph.png')
