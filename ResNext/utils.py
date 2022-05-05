@@ -30,11 +30,15 @@ def metric_batch(output: torch.Tensor, target: torch.Tensor):
     description:
         배치 당 metric을 계산, 여기선 cross entropy 기준으로 지표 측정
     """
-    # 어느 차원을 기준으로 argmax
+    # 10개의 Label을 가진 256개의 배열이 들어 올 것 (배치 당 이므로)
+    # 그러므로 10개의 정답 중 가장 큰 것을 찾아야 함
+    # 배치를 감싼 배열의 차원: 0, 정답을 가진 배치의 차원 : 1
+    # 고로 1을 기준으로 계산
+    # 라벨은 원 핫 인코딩 벡터로 들어온다는 것을 유의
     pred = output.argmax(1, keepdim=1)
     # prediction 과 똑같은 차원으로 만든 뒤, 동일한 것들만 더해서 반환함 (맞은 갯수 반환)
     # 예측값과 정답 비교, 정답은 동일 차원으로 만든 뒤(view_as) 비교
-    # 비교 후 모두 더함
+    # 비교 후 일치하는 것들만 모두 더함
     corrects = pred.eq(target.view_as(pred)).sum().item()
     return corrects
 
