@@ -36,15 +36,26 @@ def JSON_to_history(name):
     print(history)
     return history
  
-def draw(legend, *history_list):
-    for history in history_list:
-        plt.xlabel('epochs')
-        plt.ylabel('top-1 error (%)')
-        plt.plot(history['train'], '--r')
-        plt.plot(history['val'], 'b')
-        plt.legend([f'{legend} Train', f'{legend} Val'])
-        plt.savefig('result_graph.png')
+def get_color(cursor):
+    color = ['red', 'blue', 'orange', 'green']
 
-history_to_JSON('resNet', {'train': [1, 2], 'val': [3, 4]})
+    return color[cursor]
+
+def draw(history_dict):
+    plt.xlabel('epochs')
+    plt.ylabel('top-1 error (%)')
+    cursor = 0
+    for legend in history_dict:
+        history = history_dict[legend]
+        color = get_color(cursor)
+        plt.plot(history['train'], color=color, linestyle='--', label=f"{legend} Train")
+        cursor += 1
+        color = get_color(cursor)
+        plt.plot(history['val'], color=color, label=f"{legend} Val")
+        cursor += 1
+        # legend_list.append(f"{legend} Train, {legend} Val")
+    plt.legend()
+    plt.savefig('result_graph.png')
+
 history = JSON_to_history('resNet')
-draw('resNet', history)
+draw({"resnet":{'train':[1, 2], 'val': [3, 4]}, "resNext": {'train': [3, 4], 'val': [5, 6]}})

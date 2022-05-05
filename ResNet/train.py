@@ -12,7 +12,7 @@ from torchsummary import summary
 import numpy as np
 import matplotlib.pyplot as plt
 
-from global_utils import create_directory, get_lr
+from global_utils import create_directory, get_lr, history_to_JSON
 from utils import get_param_train, train_val
 from resnet import ResNetMaker
 
@@ -75,9 +75,4 @@ hyper_param = get_param_train(optimizer, loss_function, train_dl, val_dl, lr_sch
 model, loss_hist, metric_hist = train_val(model, hyper_param)
 
 
-plt.xlabel('epochs')
-plt.ylabel('top-1 error (%)')
-plt.plot(metric_hist['train'], '--r')
-plt.plot(metric_hist['val'], 'b')
-plt.legend(['ResNet-101 Train', 'ResNet-101 Val'])
-plt.savefig('resnet_graph.png')
+history_to_JSON("ResNet", loss_hist)

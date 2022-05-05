@@ -11,7 +11,7 @@ from torchvision import transforms, datasets
 from ResNext.resnext import ResNextMaker
 from ResNext.utils import get_param_train, train_val
 
-from global_utils import create_directory  # load to global_utils
+from global_utils import create_directory, history_to_JSON  # load to global_utils
 
 torch.manual_seed(233)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -59,3 +59,5 @@ lr_scheduler = ReduceLROnPlateau(
 hyper_param = get_param_train(optimizer, loss_func, train_dl, val_dl, lr_scheduler, device, False)
 
 model, loss_hist, metric_hist = train_val(model, hyper_param)
+
+history_to_JSON("ResNext", loss_hist)
