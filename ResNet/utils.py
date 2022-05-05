@@ -40,10 +40,11 @@ def metric_batch(output: torch.Tensor, target: torch.Tensor, k=1):
         # prediction 과 똑같은 차원으로 만든 뒤, 동일한 것들만 더해서 반환함 (맞은 갯수 반환)
         corrects = pred.eq(target.view_as(pred)).sum().item()
     else:
-        # 1을 기준으로 계산(차원)
+        # 1을 기준으로 계산함(차원)
         _, pred = output.topk(k, 1, True, True)
         pred = pred.t()
-        corrects = pred.eq(target.view_as(pred)).sum().item()
+        acc = pred.eq(target.view_as(pred))
+        corrects = acc[:k].float().sum().item()
 
     return corrects
 

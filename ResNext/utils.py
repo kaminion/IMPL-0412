@@ -50,7 +50,8 @@ def metric_batch(output: torch.Tensor, target: torch.Tensor, k=1):
         # 1을 기준으로 계산함(차원)
         _, pred = output.topk(k, 1, True, True)
         pred = pred.t()
-        corrects = pred.eq(target.view_as(pred)).sum().item()
+        acc = pred.eq(target.view_as(pred))
+        corrects = acc[:k].float().sum().item()
 
     return corrects
 
