@@ -47,8 +47,8 @@ val_ds = datasets.FashionMNIST(
 
 
 # DataLoader에 적재
-train_dl = DataLoader(train_ds, batch_size=256, shuffle=True)
-val_dl = DataLoader(val_ds, batch_size=256, shuffle=True)
+train_dl = DataLoader(train_ds, batch_size=128, shuffle=True)
+val_dl = DataLoader(val_ds, batch_size=128, shuffle=True)
 
 
 # 이미지 확인
