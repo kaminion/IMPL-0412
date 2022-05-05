@@ -25,15 +25,25 @@ def get_param_train(opt, loss_func, train_dl, val_dl, lr_scheduler, device, sani
     return params_train
 
 
-def metric_batch(output: torch.Tensor, target: torch.Tensor):
+def metric_batch(output: torch.Tensor, target: torch.Tensor, k=1):
     """ 
     description:
-        배치당 metric을 계산, cross entropy에서 많이 사용
+        배치당 metric을 계산, 여기선 cross entropy용을 사용
+    Args:
+        output: Prediction을 의미 함
+        target: Ground Truth
     """
-    # 차원 수 유지, 어느 차원 기준으로 argmax 적용할 건지.
-    pred = output.argmax(1, keepdim=True)
-    # prediction 과 똑같은 차원으로 만든 뒤, 동일한 것들만 더해서 반환함 (맞은 갯수 반환)
-    corrects = pred.eq(target.view_as(pred)).sum().item()
+    # Top-K accuracy
+    if k == 1:
+        # 차원 수 유지, 어느 차원 기준으로 argmax 적용할 건지.
+        pred = output.argmax(1, keepdim=True)
+        # prediction 과 똑같은 차원으로 만든 뒤, 동일한 것들만 더해서 반환함 (맞은 갯수 반환)
+        corrects = pred.eq(target.view_as(pred)).sum().item()
+    else:
+        # 1을 기준으로 계산(차원)
+        _, pred = output.topk(k, 1, True, True)
+        corrects = pred.eq(target.view_as(pred)).sum().item()
+
     return corrects
 
 

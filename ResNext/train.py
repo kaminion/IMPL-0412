@@ -60,4 +60,4 @@ hyper_param = get_param_train(optimizer, loss_func, train_dl, val_dl, lr_schedul
 
 model, loss_hist, metric_hist = train_val(model, hyper_param)
 
-history_to_JSON("ResNext", loss_hist)
+history_to_JSON("ResNext", metric_hist)

@@ -43,7 +43,7 @@ def get_color(cursor):
 
 def draw(history_dict):
     plt.xlabel('epochs')
-    plt.ylabel('top-1 error (%)')
+    plt.ylabel('top-1 Accuracy (%)')
     cursor = 0
     for legend in history_dict:
         history = history_dict[legend]
@@ -57,5 +57,5 @@ def draw(history_dict):
     plt.legend()
     plt.savefig('result_graph.png')
 
-history = JSON_to_history('resNet')
-draw({"resnet":{'train':[1, 2], 'val': [3, 4]}, "resNext": {'train': [3, 4], 'val': [5, 6]}})
+# history = JSON_to_history('resNet')
+# draw({"resnet":{'train':[1, 2], 'val': [3, 4]}, "resNext": {'train': [3, 4], 'val': [5, 6]}})
