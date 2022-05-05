@@ -24,7 +24,9 @@ class ResNextBottleNeck(nn.Module):
             nn.BatchNorm2d(group_channels),
             nn.ReLU(),
             # 각 스테이지의 3x3 컨볼루션 레이어만 stride=2
-            nn.Conv2d(group_channels, group_channels, kernel_size=3, stride=stride, bias=False, groups=cardinality),
+            # 또한 차원 계산 시 소숫점은 버리기 때문에 padding 1을 넣어줌
+            # 크기 조정 padding =1 (56 + 2 - 3) / 2 + 1 = 55 / 2 = 27 + 1 = 28
+            nn.Conv2d(group_channels, group_channels, kernel_size=3, padding=1, stride=stride, bias=False, groups=cardinality),
             nn.BatchNorm2d(group_channels),
             nn.ReLU(),
             nn.Conv2d(group_channels, out_channels, kernel_size=1, stride=1, bias=False),

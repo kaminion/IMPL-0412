@@ -16,7 +16,7 @@ class ResNext(nn.Module):
 
         self.conv1 = nn.Sequential(
             # 112 맞춰주려고 padding 추가 (흑백이므로 채널1)
-            nn.Conv2d(1, self.in_channels, stride=2, kernel_size=7, padding=2),
+            nn.Conv2d(in_channels=1, out_channels=self.in_channels, stride=2, kernel_size=7, padding=2),
             nn.BatchNorm2d(self.in_channels),
             nn.ReLU(),
             nn.MaxPool2d(3, 2) # 3x3 stride 2
@@ -64,8 +64,6 @@ class ResNext(nn.Module):
         return x
 
 
-
-
 class ResNextMaker(object):
     # signleton
     def __new__(instance):
@@ -74,3 +72,9 @@ class ResNextMaker(object):
         if not hasattr(instance, "maker"):
             instance.maker = super().__new__(instance)  # 객체 생성 후 바인딩
         return instance.maker
+    
+    def _makeResNext_101(self):
+        """
+            return a ResNext 101 Object
+        """
+        return ResNext(32, 4, 2, [3, 4, 23, 3], 10)
