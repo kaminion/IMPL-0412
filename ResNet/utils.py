@@ -9,7 +9,7 @@ def get_param_train(opt, loss_func, train_dl, val_dl, lr_scheduler, device, sani
     """
 
     params_train = {
-        'num_epochs': 100,
+        'num_epochs': 10,
         'optimizer': opt,
         'loss_func': loss_func,
         'train_dl': train_dl,

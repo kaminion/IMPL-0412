@@ -42,8 +42,8 @@ val_ds = datasets.FashionMNIST(
     path2data, download=True, train=False, transform=val_transformation)
 
 # DataLoader에 적재
-train_dl = DataLoader(train_ds, batch_size=128, shuffle=True, num_workers=4)
-val_dl = DataLoader(val_ds, batch_size=128, shuffle=True, num_workers=4)
+train_dl = DataLoader(train_ds, batch_size=32, shuffle=True, num_workers=4)
+val_dl = DataLoader(val_ds, batch_size=32, shuffle=True, num_workers=4)
 
 # reduction: sum 하면서 하나의 스칼라로 리턴함.
 # 안하면 각 배치사이즈나 데이터별로 따로 계산함(default: mean)

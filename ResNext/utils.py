@@ -10,7 +10,7 @@ def get_param_train(opt, loss_func, train_dl, val_dl, lr_scheduler, device, sani
     """
 
     params_train = {
-        'num_epochs': 100,
+        'num_epochs': 10,
         'optimizer': opt,
         'loss_func': loss_func,
         'train_dl': train_dl,
@@ -53,7 +53,7 @@ def metric_batch(output: torch.Tensor, target: torch.Tensor, k=1):
         pred = pred.t()
         # [[1], [2]] 라벨 들어있는 것을 [1, 2] 이런식으로 reshape 함
         corrects = pred.eq(target.view(1, -1)).sum().item() # 5, 128을 128쪽에 flatten, 앞에 1차원만 남김
-        
+
     return corrects
 
 
