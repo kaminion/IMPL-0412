@@ -22,7 +22,7 @@ class PracticeResNet(nn.Module):
                       padding=3, kernel_size=7, stride=2),
             nn.BatchNorm2d(64),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=3, stride=2)
+            nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         )
 
         # channel수는 64, 128, 256, 512순이다. 증가한다.

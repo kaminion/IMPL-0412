@@ -15,13 +15,20 @@ class ResNextBottleNeck(nn.Module):
     expansion = 4
     cardinality = 32
     block_width = 4
+    base_width = 64
 
     def __init__(self, in_channels, out_channels, stride=1):
         super(ResNextBottleNeck, self).__init__()
 
-        # 컨볼루션 그룹 형성 32 * 4 = 128
-        group_channels = self.cardinality * self.block_width
-
+        group = self.cardinality
+        # 그룹 컨볼루션 base width 아웃풋 사이즈에 따라 계속 달라짐
+        # 4 * 64 / 64 = 4 이후에 4 * 128 / 64 = 8
+        num_depth = int(self.block_width * out_channels / self.base_width)
+        # 컨볼루션 그룹 형성 초기에는 (4 * 32)로 이루어짐
+        # 초기에는 128
+        # 이후에는 8 * 32 = 256
+        # 동일 원칙을 지키는 것을 볼 수 있음 (기존 ResNet과 동일)
+        group_channels = num_depth * group
 
         # 블럭 C 그대로 구현
         self.residual_function = nn.Sequential(
@@ -36,7 +43,6 @@ class ResNextBottleNeck(nn.Module):
             nn.ReLU(),
             nn.Conv2d(group_channels, out_channels * self.expansion, kernel_size=1, stride=1, bias=False),
             nn.BatchNorm2d(out_channels * self.expansion),
-            nn.ReLU()
         )
 
         self.shortcut = nn.Sequential()
