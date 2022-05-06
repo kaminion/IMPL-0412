@@ -15,11 +15,11 @@ class ResNext(nn.Module):
         self.in_channels = 64
 
         self.conv1 = nn.Sequential(
-            # 112 맞춰주려고 padding 추가 (흑백이므로 채널1) (224 - 7 + 4) / 2 + 1 = 221 / 2 110 + 1
+            # 112 맞춰주려고 padding 추가 (흑백이므로 채널1) (224 - 7 + 6) / 2 + 1 = 223 / 2 => 111 + 1 = 112
             nn.Conv2d(in_channels=1, out_channels=self.in_channels, stride=2, kernel_size=7, padding=3, bias=False),
             nn.BatchNorm2d(self.in_channels),
             nn.ReLU(),
-            nn.MaxPool2d(3, 2) # 3x3 stride 2
+            nn.MaxPool2d(kernel_size=3, stride=2, padding=1) # 3x3 stride 2 112 - 3 + 2 = 111 / 2 = 55 + 1 = 56
         )
 
         self.conv2 = self._make_layer(num_blocks[0], 1)
