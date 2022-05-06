@@ -68,6 +68,18 @@ class ResNextMaker(object):
             instance.maker = super().__new__(instance)  # 객체 생성 후 바인딩
         return instance.maker
     
+    def _makeResNext_34(self):
+        """
+            return a ResNext 34 Object
+        """
+        return ResNext([2, 4, 6, 3])
+
+    def _makeResNext_50(self):
+        """
+            return a ResNext 50 Object
+        """
+        return ResNext([3, 4, 6, 3])
+
     def _makeResNext_101(self):
         """
             return a ResNext 101 Object

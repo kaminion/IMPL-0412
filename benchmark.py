@@ -12,7 +12,7 @@ sys.path.append(os.getcwd() + os.altsep + 'ResNext')
 from ResNet.resnet import ResNetMaker
 from ResNext.resnext import ResNextMaker
 
-# model = ResNetMaker()._makeResNet_101()
+# model = ResNetMaker()._makeResNet_34()
 model = ResNextMaker()._makeResNext_101()
 # model = resnext101_32x8d()
 macs, params = get_model_complexity_info(model, (1, 224, 224), as_strings=True, print_per_layer_stat=True)
