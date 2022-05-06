@@ -27,7 +27,7 @@ class PracticeResNet(nn.Module):
 
         # channel수는 64, 128, 256, 512순이다. 증가한다.
         self.conv2_x = self._make_layer(
-            block, 64, num_block[0], 2)
+            block, 64, num_block[0], 1)
         self.conv3_x = self._make_layer(
             block, 128, num_block[1], 2)
         self.conv4_x = self._make_layer(
