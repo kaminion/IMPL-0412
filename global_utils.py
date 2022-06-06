@@ -57,5 +57,6 @@ def draw(history_dict):
     plt.legend()
     plt.savefig('result_graph.png')
 
-# history = JSON_to_history('resNet')
-# draw({"resnet":{'train':[1, 2], 'val': [3, 4]}, "resNext": {'train': [3, 4], 'val': [5, 6]}})
+history = JSON_to_history('ResNet')
+resnext = JSON_to_history('ResNext')
+draw({'ResNet':history, 'ResNext': resnext})
